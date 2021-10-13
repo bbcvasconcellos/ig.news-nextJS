@@ -6,9 +6,7 @@ import styles from "./styles.module.scss";
 
 export const SignInButton = () => {
   const [session] = useSession()//useSession valida se o usuario tem um sessao ativa ou nao
-
-  console.log(session);
-  
+    
 
   return session ? (
     (
