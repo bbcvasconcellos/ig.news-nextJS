@@ -52,6 +52,21 @@ export const getStaticProps: GetStaticProps = async() => {
     props: {
       product,
     },
+    //tempo em segundos que a pagina vai ser revalidada (gera um novo html)
     revalidate: 60 * 60 * 24, //24 horas
   }
 }
+
+/*SSG x SSR
+SSG = Static Side Generator: 
+util para paginas estaticas quais as informacoes
+sao globais ou seja a pagina tras as mesmas informacoes para qualquer usuario,
+constroi um html a cada x segundos atraves da funcao revalidate,
+
+SSR = Server Side Rendering:
+util para paginas dinamicas, que trazem paginas com informacoes individuais para
+cada usuario. Ex: uma pagina que traz uma mensagem customizada em tela como
+`Bom dia ${name}`
+
+Client Side: util para pegar dados da api
+*/

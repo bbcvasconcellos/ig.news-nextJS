@@ -10,7 +10,7 @@
 
   a {
     display: block;
-  
+    //para cada post precedido de outro post
     & + a {
       margin-top: 2rem;
       padding-top: 2rem;

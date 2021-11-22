@@ -11,7 +11,7 @@ export const SignInButton = () => {
   return session ? (
     (
       <button 
-        type="button"
+        type="button" 
         className={styles.signInButton} 
         onClick={() => signOut()} 
       >
