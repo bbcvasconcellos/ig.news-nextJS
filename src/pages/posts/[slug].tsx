@@ -11,7 +11,7 @@ interface PostProps {
     slug: string;
     title: string;
     content: string;
-    updateAt: string;
+    updatedAt: string;
   }
 }
 
@@ -24,9 +24,9 @@ export default function Post({ post }: PostProps) {
       <main className={styles.container}>
         <article className={styles.post}>
           <h1>{post.title}</h1>
-          <time>{post.updateAt}</time>
+          <time>{post.updatedAt}</time>
           <div 
-            dangerouslySetInnerHTML={{__html: post.content}}
+            dangerouslySetInnerHTML={{ __html: post.content }}
             className={styles.postContent}  
           />
         </article>
@@ -40,7 +40,14 @@ export const getServerSideProps: GetServerSideProps = async({ req, params }) => 
   const session = await getSession({ req }) //informa se o usuario esta logado ou nao
   const { slug } = params;
 
-  /* if(!session) {} */
+  if(!session?.activeSubscription) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  } 
 
   const prismic = getPrismicClient(req)
   const response = await prismic.getByUID('post', String(slug), {}) //slug vem no formato de array, para passar somente uma string fazemos um casting

@@ -22,6 +22,45 @@ export default NextAuth({
     signin sera sempre executada quando o usuario se logar
   */
   callbacks: {
+    //permite modificar os dados do contexto session
+    async session(session) {
+      session.user.email
+
+     try { 
+       const userActiveSubscription = await fauna.query(
+        query.Get(
+          query.Intersection([
+            query.Match(
+              query.Index('subscription_by_user_ref'),
+              query.Select(
+                'ref',
+                query.Get(
+                  query.Match(
+                    query.Index('user_by_email'),
+                    query.Casefold(session.user.email)
+                  )
+                )
+              )
+            ),
+            query.Match(
+              query.Index('subscription_by_status'),
+              "active"
+            )
+          ])
+        )
+      )
+      return {
+        ...session,
+        activeSubscription: userActiveSubscription
+        }
+      } 
+      catch {
+        return {
+          ...session,
+          activeSubscription: null
+        }
+      }
+    },
     async signIn({ user, account, profile, email }) {
       //insercao/salvar user no banco de dado
       try{
